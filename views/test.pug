@@ -1,0 +1,110 @@
+mixin comment(data)
+    .comment1
+        if data.postbyadmin
+            em (Post By Admin)
+        .date= data.date
+        .author= data.author
+        .text= data.text
+
+doctype html
+html
+    head
+        link(href="style.css" rel="stylesheet")
+        style.
+            p {
+                text-align:center;
+                font-size:50px;
+                color: white;
+            }
+
+            .comment1 {
+                border: 1px solid #555;
+                line-height: 1.5;
+                width:400px;
+                padding:10px;
+            }
+            .date{
+                text-align:right;
+                font-size:80%;
+                
+            }
+
+            .author {
+                font-size:110%;
+            }
+
+            .text{
+                font-size:90%;
+            }
+        title This is homepage
+         
+    body
+        //- classes and id and js variable in pug
+        //- button(class='button' href='google.com') Google
+        //- input(data-js=`${1 > 1 ? "OK" : "NOT OK"}` type="text")
+
+        //- - const classes = ['class1','class2','class3']
+        //- div.class0(class=classes)
+
+        //- const styles = {"color" : "red", "background-color" : "blue"}
+        //- p(style="text-align:center;").
+        //- p.
+        //-     this is paragraph 123 line 1 text
+        //- - const Attrib = {"src":"./xxx.png","alt":"my xxx image"}
+        //- img&attributes(Attrib)
+
+        //- input(type="text" disabled=false)
+
+        //- each loop in pug    
+      
+        //- const names = ['bob','jackson','lameralb']
+        //- each n,i in dic
+        //-     p= n + 'index : ' + i
+        //- else
+        //-     strong this is nothing to show!
+        
+        //-pug if statement
+        //- const dic = {name:'jackson',islogged: false,lastloginMin: 6}
+        //- if dic.islogged
+        //-     p
+        //-     | welcome back,
+        //-     strong #{dic.name}
+        //- else if dic.lastloginMin < 10
+        //-     p 
+        //-     strong you did logging @ #{dic.lastloginMin} mins ago,         
+        //-     a(href='/login.js') login again
+        //- else 
+        //-     a(href='/login.js') login
+
+        //- pug case (switch statement)
+
+        //- const orderStatus = 4;
+
+        //- case orderStatus
+        //-     when 1
+        //-         p your order is complete and it will proceed shortly!
+        //-     when 2
+        //-         p your order is sent out, your will receive shortly!
+        //-     when 3
+        //-         p order completed!
+        //-     default
+        //-         p no order available!
+
+        //- pug include keyword which pages share nenu / nav bar / css / script together
+
+        //- nav
+        //-     a(href='test.html') Home
+        //-     a(href='aboutUs.html') About Us
+        //-     a(href='/#') Contact Us
+        //- nav to below includes folder and file name can without .pug extension
+        //- include inclues/nav
+
+
+        //- pug mixins:
+        - let data1 = {postbyadmin:true,date:"04-02-2018",author:"Admin", text: "how are you all today?"}
+        +comment(data1)
+        - data1 = {postbyadmin:false,date:"04-03-2028",author:"guest", text: "how are you today? admin?"}
+        +comment(data1)
+        
+            
+
