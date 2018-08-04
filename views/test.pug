@@ -9,36 +9,13 @@ mixin comment(data)
 doctype html
 html
     head
-        link(href="style.css" rel="stylesheet")
-        style.
-            p {
-                text-align:center;
-                font-size:50px;
-                color: white;
-            }
-
-            .comment1 {
-                border: 1px solid #555;
-                line-height: 1.5;
-                width:400px;
-                padding:10px;
-            }
-            .date{
-                text-align:right;
-                font-size:80%;
-                
-            }
-
-            .author {
-                font-size:110%;
-            }
-
-            .text{
-                font-size:90%;
-            }
-        title This is homepage
+        link(href="test.css" rel="stylesheet")           
+        title 首頁
          
     body
+        include inclues/nav
+        .container
+         block content
         //- classes and id and js variable in pug
         //- button(class='button' href='google.com') Google
         //- input(data-js=`${1 > 1 ? "OK" : "NOT OK"}` type="text")
@@ -97,14 +74,18 @@ html
         //-     a(href='aboutUs.html') About Us
         //-     a(href='/#') Contact Us
         //- nav to below includes folder and file name can without .pug extension
-        //- include inclues/nav
+       
 
 
+
+
+
+
+        //-  <a class="navbar-brand" href="index.html">
+           
         //- pug mixins:
-        - let data1 = {postbyadmin:true,date:"04-02-2018",author:"Admin", text: "how are you all today?"}
-        +comment(data1)
-        - data1 = {postbyadmin:false,date:"04-03-2028",author:"guest", text: "how are you today? admin?"}
-        +comment(data1)
-        
-            
+        //- - let data1 = {postbyadmin:true,date:"04-02-2018",author:"AdminNew1", text: "how are you all today?"}
+        //- +comment(data1)
+        //- - data1 = {postbyadmin:false,date:"04-03-2028",author:"GuestNe1w", text: "how are you today? admin?"}
+        //- +comment(data1) 
 

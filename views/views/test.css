@@ -1,0 +1,35 @@
+p {
+  text-align: center;
+  font-size: 50px;
+  color: blueviolet;
+}
+
+.comment1 {
+  border: 1px solid #555;
+  line-height: 1.5;
+  width: 400px;
+  padding: 10px;
+}
+
+.date {
+  text-align: right;
+  font-size: 80%;
+}
+
+.author {
+  font-size: 110%;
+}
+
+.text {
+  font-size: 90%;
+}
+
+.page-header {
+  padding-bottom: 9px;
+  margin: 40px 0 20px;
+  border-bottom: 1px solid #000;
+}
+
+.fancy2 {
+  box-shadow: 0px 7px 5px -2px rgba(0, 0, 0, 0.3);
+}
