@@ -5,14 +5,18 @@
     //- a(href='#') Contact Us
 
 //-navbar-dark 文字顏色 .bg-dark 背景顏色
+script(src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js" type="text/javascript")
+link(type="text/css" href="stylesheets/bootstrap.css" rel="stylesheet") 
+script(src="javascripts/bootstrap.js" type="text/javascript")
+link(type="text/css" href="stylesheets/test.css" rel="stylesheet")   
 
-script(src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js")
-link(href="bootstrap.css", rel="stylesheet")
-script(src="bootstrap.js")
+//script(src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js")
+//link(href="bootstrap.css", rel="stylesheet")
+//script(src="bootstrap.js")
 
 nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
     a(href="test.html").avbar-brand
-        img(src="logo.svg", alt="logo image", width="30", height="30").d-inline-block.align-top
+        img(src="images/logo.svg", alt="logo image", width="30", height="30").d-inline-block.align-top
         span.h3.align-middle.mx-2(style="font-family:Arial") Renesas
 
     button.navbar-toggler(type="button",data-toggle="collapse" data-target="#navbarSupportedContent" 
@@ -43,5 +47,5 @@ nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
                 if (mode.id == 'btnReg')
                     window.location.href = 'register.html';
                 if (mode.id == 'btnLogin')
-                    window.location.href = 'login.html';
+                    window.location.href = 'test1.html';
             };
