@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var favicon = require("serve-favicon");
+
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var session = require("express-session");
@@ -19,7 +20,7 @@ var app = express();
 
 // app.use("/static", express.static(__dirname + "/public"));
 app.use(express.static(__dirname + "/public"));
-
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -59,6 +60,9 @@ app.use("/users", usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+//avoid favicon.ico reloading....
+// app.get("/favicon.ico", (req, res) => res.status(204));
 
 // error handler
 app.use(function(err, req, res, next) {
