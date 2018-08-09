@@ -6,25 +6,25 @@
 
 //-navbar-dark 文字顏色 .bg-dark 背景顏色
 script(src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js" type="text/javascript")
-link(type="text/css" href="stylesheets/bootstrap.css" rel="stylesheet") 
-script(src="javascripts/bootstrap.js" type="text/javascript")
-link(type="text/css" href="stylesheets/test.css" rel="stylesheet")   
+link(type="text/css" href="../stylesheets/bootstrap.css" rel="stylesheet") 
+script(src="../javascripts/bootstrap.js" type="text/javascript")
+link(type="text/css" href="../stylesheets/test.css" rel="stylesheet")   
 
 nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
     a(href="test.html").avbar-brand
-        img(src="images/logo.svg", alt="logo image", width="30", height="30").d-inline-block.align-top
+        img(src="../images/logo.svg", alt="logo image", width="30", height="30").d-inline-block.align-top
         span.h3.align-middle.mx-2(style="font-family:Arial") NodeAuth
 
     button.navbar-toggler(type="button",data-toggle="collapse" data-target="#navbarSupportedContent" 
                           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
         span.navbar-toggler-icon
     .collapse.navbar-collapse(id="navbarSupportedContent")
-        ul.navbar-nav.mr-5
-            li.nav-item.active
-                a.nav-link(href="#") 會員專區
+        ul.navbar-nav.mr-5 
+            li(class='nav-item active') 
+                a.nav-link(href="/") 會員專區
                     span.sr-only Current
             li.nav-item
-                a.nav-link(href="aboutUs.html") 關於我們
+                a.nav-link(href="/about/aboutUs") 關於我們
             li.nav-item.dropdown
                 a.nav-link.dropdown-toggle(id="navbarDropdownMenuLink" data-toggle="dropdown" href="#" aria-expanded="false" aria-haspopup="true") 聯絡我們
                 .dropdown-menu(aria-labelledby="navbarDropdownMenuLink")
