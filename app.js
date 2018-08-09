@@ -5,7 +5,8 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var favicon = require("serve-favicon");
-
+const { body } = require("express-validator/check");
+const { sanitizeBody } = require("express-validator/filter");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var session = require("express-session");
@@ -62,6 +63,9 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
@@ -82,6 +86,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   //res.status(err.status || 500);
   //res.render("error");
+});
+
+app.set("port", process.env.PORT || 3008);
+var server = app.listen(app.get("port"), function() {
+  console.log("Express server listening on port " + server.address().port);
 });
 
 module.exports = app;
