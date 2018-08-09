@@ -94,6 +94,12 @@ $(document).ready(function() {
     );
   });
 
+  $(".closetab").click(function() {
+    if (confirm("放棄註冊?")) {
+      close();
+    }
+  });
+
   $(".submit").click(function() {
     return false;
   });

@@ -10,14 +10,10 @@ link(type="text/css" href="stylesheets/bootstrap.css" rel="stylesheet")
 script(src="javascripts/bootstrap.js" type="text/javascript")
 link(type="text/css" href="stylesheets/test.css" rel="stylesheet")   
 
-//script(src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js")
-//link(href="bootstrap.css", rel="stylesheet")
-//script(src="bootstrap.js")
-
 nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
     a(href="test.html").avbar-brand
         img(src="images/logo.svg", alt="logo image", width="30", height="30").d-inline-block.align-top
-        span.h3.align-middle.mx-2(style="font-family:Arial") Renesas
+        span.h3.align-middle.mx-2(style="font-family:Arial") NodeAuth
 
     button.navbar-toggler(type="button",data-toggle="collapse" data-target="#navbarSupportedContent" 
                           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
@@ -25,7 +21,7 @@ nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
     .collapse.navbar-collapse(id="navbarSupportedContent")
         ul.navbar-nav.mr-5
             li.nav-item.active
-                a.nav-link(href="#") 首頁
+                a.nav-link(href="#") 會員專區
                     span.sr-only Current
             li.nav-item
                 a.nav-link(href="aboutUs.html") 關於我們
@@ -40,12 +36,18 @@ nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
         .regBtn
             button#btnReg.btn.btn-outline-warning.mr-sm-2(type="submit" onclick='move(this)') 註冊
         .loginBtn
-            button#btnLogin.btn.btn-outline-primary.my-2.my-sm-0(type="submit" onclick='move(this)') 登入
+            button#btnLogin.btn.btn-outline-primary.mr-sm-2(type="submit" onclick='move(this)') 登入
+        .logOutBtn
+            button#btnLogout.btn.btn-outline-danger.mr-sm-2(type="submit" onclick='move(this)') 登出
         script.
             function move(mode) {
                 //alert(mode.id);
-                if (mode.id == 'btnReg')
-                    window.location.href = 'register.html';
+                if (mode.id == 'btnReg'){
+                    console.log(mode.id);
+                     window.open('/users/register','_blank');
+                }              
                 if (mode.id == 'btnLogin')
-                    window.location.href = 'test1.html';
+                    window.location.href = '/users/login';
+                if (mode.id == 'logOutBtn')
+                    window.location.href = '/users/logout';
             };

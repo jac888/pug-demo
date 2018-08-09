@@ -18,10 +18,17 @@ var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var app = express();
 
-// app.use("/static", express.static(__dirname + "/public"));
-app.use(express.static(__dirname + "/public"));
+//app.use("/static", express.static(__dirname + "/public"));
+app.use(express.static("public"));
+//app.use(express.static(__dirname + "/public"));
+//app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.resolve("./public")));
+//app.use('/js', express.static(path.join(__dirname, 'public/javascripts')));
+//app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
+
+//site favicon
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
-// view engine setup
+// view engine setup with pug
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
@@ -45,6 +52,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // validator changed usage...
+// var ExpressValidator = require("express-validator");
+// app.use(ExpressValidator);
 
 // express-messages
 app.use(require("connect-flash")());
