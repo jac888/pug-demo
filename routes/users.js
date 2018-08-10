@@ -1,11 +1,12 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var urlencodedParser = bodyParser.urlencoded({ extended: true });
 var router = express.Router();
-
+var User = require("../model/user");
 var multer = require("multer");
 var upload = multer({ dest: "./uploads" });
-
+var passport = require("passport"),
+  LocalStrategy = require("passport-local").Strategy;
 /* GET users listing. */
 router.get("/", function(req, res, next) {
   res.send("respond with a resource");
@@ -17,7 +18,7 @@ router.get("/register", function(req, res, next) {
 
 // ...rest of the initial code omitted for simplicity.
 const { check, validationResult } = require("express-validator/check");
-
+var fileNotUpped = true;
 // 使用硬盘存储模式设置存放接收到的文件的路径以及文件名
 var storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -34,77 +35,116 @@ router.post(
   "/register",
   upload.single("profileimage"),
   (req, res, next) => {
-    console.log(req.file.originalname);
-    console.log(req.body.username);
-    console.log(req.body.password);
+    if (req.file) {
+      fileNotUpped = false;
+      image = req.file;
+      console.log(req.file.originalname);
+    }
     next();
   },
   [
-    // username must be an email
-    check("username")
+    check("username", "帳號不能為空！")
+      .not()
+      .isEmpty(),
+    check("email", "電子郵件不能為空！")
+      .not()
+      .isEmpty(),
+    check("password", "密碼不能為空！")
       .not()
       .isEmpty()
-      .withMessage("username empty!"),
-    // password must be at least 5 chars long
-    check("password")
+      .custom((value, { req, loc, path }) => {
+        // console.log("loc: " + loc);
+        // console.log("path: " + path);
+        // console.log("value: " + value);
+        console.log("password : " + value);
+        console.log("password2 : " + req.body.password2);
+        if (value !== req.body.password2) {
+          throw new Error("您輸入的兩組密碼不相同！");
+        } else {
+          return value;
+        }
+      }),
+    check("password2", "確認密碼不能為空！")
       .not()
       .isEmpty()
-      .withMessage("password empty!")
   ],
   (req, res, next) => {
     // Finds the validation errors in this request and wraps them in an object with handy functions
     const errors = validationResult(req);
-    console.log(errors.isEmpty().toString());
+    //console.log(errors.isEmpty().toString());
     const arr = [];
     if (!errors.isEmpty()) {
-      //
-      console.log("got errors!");
+      console.log("有錯誤! ： ");
       errors.array().forEach(error => {
-        console.log(error.msg);
+        //console.log(error.msg);
         arr.push(error.msg);
       });
+      if (fileNotUpped) arr.push("檔案必須上傳");
       res.render("register", {
         errors: arr
       });
+    } else {
+      var newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email
+      });
+
+      if (!fileNotUpped) newUser.profileimage = profileimage;
+
+      User.createUser(newUser, (err, user) => {
+        if (err) throw err;
+        console.log(user);
+      });
+
+      req.flash("success", "註冊成功！請至登入頁面進行登入！");
+      res.location("/");
+      res.redirect("/");
     }
   }
 );
 
-// router.post("/register", upload.single("profileimage"), (req, res, next) => {
-//   var usrname = req.body.username;
-//   var email = req.body.email;
-//   var pass = req.body.password;
-//   var pass2 = req.body.password2;
-//   var profileimage = req.body.profileimage;
-
-//   if (validator.isEmpty(usrname)) {
-//     //alert("username is empty");
-//     return false;
-//   }
-//   if (validator.isEmpty(email)) console.log("email is empty");
-
-//   if (validator.isEmpty(pass)) console.log("pass is empty");
-
-//   if (validator.isEmpty(pass2)) console.log("pass2 is empty");
-
-//   console.log("username : " + usrname);
-//   console.log("email :" + email);
-//   console.log("pass : " + pass);
-//   console.log("cpass : " + pass2);
-
-//   if (req.file) {
-//     console.log("uploading file...");
-//     var profileimage = req.file.filename;
-//     console.log("uploaded file : " + profileimage);
-//   } else {
-//     console.log("no file!");
-//     var profileimage = "noimage.png";
-//     console.log("profileimage is : " + profileimage);
-//   }
-// });
-
 router.get("/login", function(req, res, next) {
   res.render("login", { title: "登入" });
+});
+
+passport.use(
+  new LocalStrategy(function(username, password, done) {
+    User.getUserByUsername(username, function(err, user) {
+      if (err) {
+        return done(err);
+      }
+      if (!user) {
+        return done(null, false, { message: "Incorrect username." });
+      }
+      User.comparePassword(password, user.password, function(err, isMatch) {
+        if (err) throw err;
+        if (isMatch) {
+          return done(null, user);
+        } else {
+          return done(null, false, { message: "Invalid password" });
+        }
+      });
+    });
+  })
+);
+
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/users/login",
+    failureFlash: true
+  })
+);
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.getUserById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 module.exports = router;

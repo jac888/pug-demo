@@ -17,27 +17,20 @@ var upload = multer({ dest: "./uploads" });
 var connectFlash = require("connect-flash");
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
+var bcrypt = require("bcryptjs");
 var app = express();
 
-//app.use("/static", express.static(__dirname + "/public"));
 app.use(express.static("public"));
-//app.use(express.static(__dirname + "/public"));
-//app.use(express.static(path.join(__dirname, "public")));
-//app.use(express.static(path.resolve("./public")));
-//app.use('/js', express.static(path.join(__dirname, 'public/javascripts')));
-//app.use('/css', express.static(path.join(__dirname, 'public/stylesheets')));
 
 //site favicon
 app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 // view engine setup with pug
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, "public")));
 
 // handle sessions
 app.use(
@@ -88,7 +81,7 @@ app.use(function(err, req, res, next) {
   //res.render("error");
 });
 
-app.set("port", process.env.PORT || 3008);
+app.set("port", process.env.PORT || 2000);
 var server = app.listen(app.get("port"), function() {
   console.log("Express server listening on port " + server.address().port);
 });

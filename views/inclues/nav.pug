@@ -4,10 +4,10 @@ link(type="text/css" href="../stylesheets/bootstrap.css" rel="stylesheet")
 script(src="../javascripts/bootstrap.js" type="text/javascript")
 link(type="text/css" href="../stylesheets/test.css" rel="stylesheet")   
 
-nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
+nav.navbar.navbar-expand-sm.navbar-dark(style="background-color:transparent")
     a(href="/").avbar-brand
         img(src="../images/logo.svg", alt="logo image", width="30", height="30").d-inline-block.align-top
-        span.h3.align-middle.mx-2(style="font-family:Arial") NodeAuth
+        span.h3.align-middle.mx-2(style="font-family:Arial;color:#dfeefe") NodeAuth
 
     button.navbar-toggler(type="button",data-toggle="collapse" data-target="#navbarSupportedContent" 
                           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
@@ -26,13 +26,13 @@ nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
                     a.dropdown-item(href="#") 聯絡信箱
         form.form-inline.mx-auto
             input#search.form-control.mr-sm-4(type="search", aria-label="Search123", placeholder="請輸入查詢商品...")
-            button#btnSearch.btn.btn-outline-success.my-2.my-sm-0(type="submit") 查詢
+            button#btnSearch.btn.btn-success.my-2.my-sm-0(type="submit") 查詢
         .regBtn
-            button#btnReg.btn.btn-outline-warning.mr-sm-2(type="submit" onclick='move(this)') 註冊
+            button#btnReg.btn.btn-warning.mr-sm-2(type="submit" onclick='move(this)') 註冊
         .loginBtn
-            button#btnLogin.btn.btn-outline-primary.mr-sm-2(type="submit" onclick='move(this)') 登入
+            button#btnLogin.btn.btn-primary.mr-sm-2(type="submit" onclick='move(this)') 登入
         .logOutBtn
-            button#btnLogout.btn.btn-outline-danger.mr-sm-2(type="submit" onclick='move(this)') 登出
+            button#btnLogout.btn.btn-danger.mr-sm-2(type="submit" onclick='move(this)') 登出
         script.
             function move(mode) {
                 //alert(mode.id);

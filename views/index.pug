@@ -13,7 +13,8 @@ html
     body
         include inclues/nav
         .container
-         block content 
+         block content
+         != messages()
         //- classes and id and js variable in pug
         //- button(class='button' href='google.com') Google
         //- input(data-js=`${1 > 1 ? "OK" : "NOT OK"}` type="text")

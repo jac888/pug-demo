@@ -10,12 +10,12 @@ html
         link(type="text/css" href="../stylesheets/login.css" rel="stylesheet")   
         link(type="text/css" href="../stylesheets/bootstrap.css" rel="stylesheet")
                                                             //- enctype="multipart/form-data"
-        form#msform(method="post" action="/users/register" enctype="multipart/form-data")
+        form#msform(method="post" action="/users/register")
             ul#progressbar
                 li.active 註冊您的帳號
                 li 您的社交網路
                 li 個人詳細資訊
-
+    
             if errors
                 each error,i in errors
                     div.alert.alert-danger #{error}             
@@ -27,7 +27,7 @@ html
                 input.form-control(name="email" type="email" placeholder="電子郵件")
                 input.form-control(name="password" type="password" placeholder="您的密碼")
                 input.form-control(name="password2" type="password" placeholder="再次確認您的密碼")
-                input.form-control(name="profileimage" type="file")
+                //-input.form-control(name="profileimage" type="file")
                 input(class="closetab action-button" name="closetab" type="button" value="放棄註冊")
                 input(class="next1 action-button" name="next1" type="submit" value="提交")
                 //- 下一步

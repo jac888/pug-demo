@@ -1,3 +1,9 @@
+/*basic reset*/
+* {
+  margin: 0;
+  padding: 0;
+}
+
 p {
   text-align: center;
   font-size: 50px;
@@ -32,4 +38,26 @@ p {
 
 .fancy2 {
   box-shadow: 0px 7px 5px -2px rgba(0, 0, 0, 0.3);
+}
+
+ul.success li {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  list-style: none;
+}
+
+ul.error li {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  list-style: none;
 }
