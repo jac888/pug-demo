@@ -18,7 +18,12 @@ var connectFlash = require("connect-flash");
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var bcrypt = require("bcryptjs");
+
 var app = express();
+
+//socket io web socket
+let users = [];
+let connections = [];
 
 app.use(express.static("public"));
 
@@ -90,6 +95,53 @@ app.use(function(err, req, res, next) {
 app.set("port", process.env.PORT || 2000);
 var server = app.listen(app.get("port"), function() {
   console.log("Express server listening on port " + server.address().port);
+});
+var io = require("socket.io")(server);
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/");
+});
+
+io.sockets.on("connection", socket => {
+  connections.push(socket);
+  console.log(`connected : ${connections.length} sockets connected`);
+  socket.on("send-nickname", function(nickname) {
+    socket.nickname = nickname;
+    users.push(socket.nickname);
+    console.log(users);
+  });
+
+  //show how many socket left
+  socket.on("disconnect", data => {
+    console.log(data);
+    connections.splice(connections.indexOf(socket), 1);
+    console.log("disconnected : name :" + socket.username);
+    users.splice(users.indexOf(socket.username), 1);
+    updateUsernames();
+    console.log(`Disconnected : ${connections.length} sockets connected`);
+  });
+
+  //send message
+  socket.on("send message", (user, message) => {
+    console.log(`data : ${message}`);
+    console.log("username 2 : " + user);
+    io.sockets.emit("new message", { msg: message, user: user });
+  });
+
+  //new user
+  socket.on("new user", (data, cb) => {
+    console.log(`new user : ${data}`);
+    if (users.indexOf(data) >= 0) return cb(false);
+    cb(true);
+    //socket.username = data;
+    users.push(data);
+    socket.username = data;
+    updateUsernames();
+  });
+
+  function updateUsernames() {
+    io.sockets.emit("get users", users);
+  }
 });
 
 module.exports = app;

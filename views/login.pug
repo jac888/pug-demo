@@ -8,7 +8,8 @@ html
         script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js")
         script(src="../javascripts/login.js" type="text/javascript")
         link(type="text/css" href="../stylesheets/login.css" rel="stylesheet")   
-        
+        link(type="text/css" href="../stylesheets/bootstrap.css" rel="stylesheet") 
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js")
         
         != messages()
         form#msform(method="post" action="/users/login")
@@ -23,23 +24,81 @@ html
                 //- input(class="closetab action-button" name="closetab" type="button" value="放棄註冊")
                 input(class="login action-button" name="login" type="submit" value="登入")
 
-            //- fieldset
-            //-     h2.fs-title 您的社交網路
-            //-     h3.fs-subtitle 請讓我們更了解您
-            //-     input(name="text" type="twitter" placeholder="Twitter")
-            //-     input(name="text" type="facebook" placeholder="Facebook")
-            //-     input(name="text" type="gplus" placeholder="Google Plus")
-            //-     input(class="previous action-button" name="previous" type="button" value="返回")
-            //-     input(class="next action-button" name="next" type="button" value="下一步")
 
-            //- fieldset
-            //-     h2.fs-title 個人詳細資訊
-            //-     h3.fs-subtitle 我們不會以任何形式透露您的相關訊息
-            //-     input(name="text" type="fname" placeholder="First Name")
-            //-     input(name="text" type="lname" placeholder="Last Name")
-            //-     input(name="text" type="phone" placeholder="Phone")
-            //-     input(class="previous action-button" name="previous" type="button" value="返回")
-            //-     input(class="next action-button" name="next" type="button" value="下一步")
+        .container
+            #userFormArea.row
+                .col-md-12
+                    form#userForm
+                        .form-group
+                            label 輸入您的暱稱
+                            input.form-control#username
+                            br
+                            input.btn.btn-primary(type="submit" value="立即交談") 
+            #messageArea.row 
+                //-sidebar 
+                .col-md-4 
+                    .well
+                        h3 Online Users
+                        ul.list-group#users 
+                //-main chat area
+                .col-md-8
+                    .chat#chat
 
+                    form#messageForm
+                        .form-group
+                            label 輸入您的訊息
+                            textarea.form-control#message
+                            br
+                            input.btn.btn-primary(type="submit" value="傳送訊息")  
+
+
+        script.
+                $(function(){
+                    var usrname = "";
+                    var socket = io.connect();
+                    var $messageForm = $('#messageForm'); 
+                    var $message = $('#message'); 
+                    var $chat = $('#chat');
+                    var $userForm = $('#userForm'); 
+                    var $userFormArea = $('#userFormArea'); 
+                    var $messageArea = $('#messageArea'); 
+                    var $users = $('#users'); 
+                    var $username = $('#username'); 
+                      
+                    $messageForm.submit((e)=>{
+                        e.preventDefault();
+                        // console.log("submitted");
+                        socket.emit('send message',$message.val());
+                        $message.val('');
+                    });
+
+                    socket.on('new message', data => {
+                        $chat.append('<div class="well"><strong>'+data.user+'</strong> : '+ data.msg + '</div>'); 
+                    });
+
+                    //user 
+
+                    $userForm.submit((e)=>{
+                        e.preventDefault();
+                        // console.log("submitted");
+                        usrname = $username.val();
+                        socket.emit('new user', usrname, data => {
+                            if (data) {
+                                $userFormArea.hide();
+                                $messageArea.show();
+                            } else
+                                alert('此暱稱已經有人使用!');
+                        });
+                        $username.val('');
+
+                        socket.on('get users', function (data) {
+                            var html = "";
+                            for (i = 0; i < data.length; i++){
+                                html += '<li class="list-group-item">' + data[i] + '</li>'
+                            };
+                            $users.html(html);
+                        })
+                    });
+                });
 
             
