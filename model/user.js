@@ -27,6 +27,10 @@ var userSchema = mongoose.Schema({
   },
   profileimage: {
     type: String
+  },
+  isactive: {
+    type: Boolean,
+    default: false
   }
 });
 

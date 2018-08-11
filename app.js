@@ -56,6 +56,12 @@ app.use(function(req, res, next) {
   next();
 });
 
+//create global variable * means anypge
+app.get("*", (req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

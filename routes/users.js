@@ -79,7 +79,7 @@ router.post(
         //console.log(error.msg);
         arr.push(error.msg);
       });
-      if (fileNotUpped) arr.push("檔案必須上傳");
+      //if (fileNotUpped) arr.push("檔案必須上傳");
       res.render("register", {
         errors: arr
       });
@@ -104,6 +104,10 @@ router.post(
   }
 );
 
+router.get("/memberArea", function(req, res, next) {
+  res.render("memberArea", { title: "會員專區" });
+});
+
 router.get("/login", function(req, res, next) {
   res.render("login", { title: "登入" });
 });
@@ -115,14 +119,14 @@ passport.use(
         return done(err);
       }
       if (!user) {
-        return done(null, false, { message: "Incorrect username." });
+        return done(null, false, { message: "使用者或密碼錯誤" });
       }
       User.comparePassword(password, user.password, function(err, isMatch) {
         if (err) throw err;
         if (isMatch) {
           return done(null, user);
         } else {
-          return done(null, false, { message: "Invalid password" });
+          return done(null, false, { message: "密碼錯誤！" });
         }
       });
     });
@@ -134,7 +138,19 @@ router.post(
   passport.authenticate("local", {
     failureRedirect: "/users/login",
     failureFlash: true
-  })
+  }),
+  (req, res, next) => {
+    if (!req.user.isactive) {
+      req.flash(
+        "success",
+        "您尚未認證您的電子信箱，請至您的郵箱查詢認證信並認證！"
+      );
+      req.logout();
+      res.redirect("/users/login");
+    } else {
+      res.redirect("/users/memberArea");
+    }
+  }
 );
 
 passport.serializeUser(function(user, done) {
