@@ -18,7 +18,7 @@ var connectFlash = require("connect-flash");
 var mongodb = require("mongodb");
 var mongoose = require("mongoose");
 var bcrypt = require("bcryptjs");
-
+const jwt = require("jsonwebtoken");
 var app = express();
 
 //socket io web socket
@@ -143,5 +143,59 @@ io.sockets.on("connection", socket => {
     io.sockets.emit("get users", users);
   }
 });
+const api = express();
+api.get("/api", (req, res) => {
+  res.json({
+    message: "welcome to api!"
+  });
+});
+
+api.post("/api/posts", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secret", (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      res.json({
+        message: "welcome to posts!",
+        authData
+      });
+    }
+  });
+});
+
+api.post("/api/login", (req, res) => {
+  const user = {
+    id: 1,
+    name: "jackson",
+    email: "tekken1234@hotmail.com"
+  };
+  jwt.sign({ user: user }, "secret", { expiresIn: "30s" }, (err, token) => {
+    res.json({ token: token });
+  });
+});
+
+api.listen("5000", () => {
+  console.log("api server starts");
+});
+
+//format token
+//Authorization: Bearer <access_token>
+
+//verfify token
+function verifyToken(req, res, next) {
+  //get auth header value
+  const bearerHeader = req.headers["authorization"];
+  //check bearer is undefined
+  if (typeof bearerHeader !== "undefined") {
+    //split with space
+    const bearer = bearerHeader.split(" ");
+    //get token from array
+    console.log(bearer[0]);
+    console.log(bearer[1]);
+    const token = bearer[1];
+    req.token = token;
+    next();
+  } else res.sendStatus(403);
+}
 
 module.exports = app;

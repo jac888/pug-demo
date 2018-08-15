@@ -26,6 +26,7 @@ html
 
 
         .container
+            //-輸入暱稱
             #userFormArea.row
                 .col-md-12
                     form#userForm
@@ -35,23 +36,22 @@ html
                             br
                             input.btn.btn-primary(type="submit" value="立即交談") 
             #messageArea.row 
-                //-sidebar 
+                //-使用者列表 
                 .col-md-4 
                     .well
                         h3 Online Users
                         ul.list-group#users 
-                //-main chat area
+                //-交談區塊
                 .col-md-8
                     .chat#chat
-
+                    //-輸入訊息區塊
                     form#messageForm
                         .form-group
                             label 輸入您的訊息
                             textarea.form-control#message
                             br
                             input.btn.btn-primary(type="submit" value="傳送訊息")  
-
-
+        //- socket.io jquery 區塊
         script.
                 $(function(){
                     var usrname = "";
@@ -77,10 +77,8 @@ html
                     });
 
                     //user 
-
                     $userForm.submit((e)=>{
                         e.preventDefault();
-                        // console.log("submitted");
                         usrname = $username.val();
                         socket.emit('new user', usrname, data => {
                             if (data) {
@@ -100,5 +98,4 @@ html
                         })
                     });
                 });
-
             
